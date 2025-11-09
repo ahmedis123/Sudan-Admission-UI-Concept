@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج بوابة القبول للجامعات السودانية 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #2563eb; --accent-blue: #1d4ed8; --background: #f8fafc;
+            --success: #16a34a; --success-bg: #f0fdf4; --success-border: #bbf7d0;
+            --warning: #f59e0b; --warning-bg: #fffbeb; --warning-border: #fde68a;
+            --danger: #ef4444; --danger-bg: #fef2f2; --danger-border: #fecaca;
+            --text-primary: #1e293b; --text-secondary: #64748b; --border-color: #e2e8f0; --card-bg: #ffffff;
+            --font-family: 'Cairo', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-family); background-color: var(--background); color: var(--text-primary); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 1rem; }
+        .mobile-container { width: 100%; max-width: 420px; background-color: var(--card-bg); border-radius: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); overflow: hidden; display: flex; flex-direction: column; }
+        .screen { padding: 1.5rem; display: none; flex-direction: column; gap: 1.5rem; animation: fadeIn 0.5s ease-in-out; }
+        .screen.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .header { text-align: center; padding: 1.5rem 1.5rem 0; border-bottom: 1px solid var(--border-color); }
+        .header img { height: 50px; margin-bottom: 0.5rem; }
+        .header h1 { font-size: 1.25rem; font-weight: 700; }
+        .header p { font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem; }
+        .footer { text-align: center; padding: 1rem; font-size: 0.8rem; color: var(--text-secondary); background-color: #f1f5f9; }
+        .btn { display: block; width: 100%; padding: 0.85rem 1rem; border-radius: 0.75rem; border: none; font-family: var(--font-family); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; text-decoration: none; }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
+        .btn-primary { background-color: var(--primary-blue); color: white; }
+        .btn-primary:hover:not(:disabled) { background-color: var(--accent-blue); }
+        .btn-secondary { background-color: var(--card-bg); color: var(--primary-blue); border: 1px solid var(--primary-blue); }
+        .btn-secondary:hover { background-color: #eff6ff; }
+        .btn-success { background-color: var(--success); color: white; }
+        .card { background-color: var(--card-bg); border-radius: 1rem; padding: 1.5rem; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); }
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-group label { font-size: 0.9rem; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid var(--border-color); font-family: var(--font-family); font-size: 1rem; background-color: #f8fafc; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 2px #dbeafe; }
+        .info-box { padding: 1rem; border-radius: 0.75rem; background-color: #eff6ff; color: #1e3a8a; font-size: 0.85rem; border: 1px solid #bfdbfe; line-height: 1.6; }
+        .success-banner { text-align: center; padding: 1.5rem; border-radius: 1rem; background-color: var(--success-bg); color: #15803d; border: 1px solid var(--success-border); }
+        .success-banner .icon { font-size: 3rem; line-height: 1; }
+        .success-banner h2 { font-size: 1.5rem; margin-top: 0.5rem; }
+        .progress-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem; margin-bottom: 1rem; position: relative; }
+        .progress-bar::before { content: ''; position: absolute; top: 50%; right: 0; width: 100%; height: 2px; background-color: var(--border-color); z-index: 1; }
+        .progress-line { position: absolute; top: 50%; right: 0; height: 2px; background-color: var(--primary-blue); z-index: 2; width: 0%; transition: width 0.4s ease; }
+        .step { width: 30px; height: 30px; border-radius: 50%; background-color: var(--card-bg); border: 2px solid var(--border-color); display: flex; justify-content: center; align-items: center; font-weight: 700; color: var(--text-secondary); z-index: 3; transition: all 0.4s ease; }
+        .step.active { border-color: var(--primary-blue); background-color: var(--primary-blue); color: white; }
+        .countdown-banner { background-color: var(--warning-bg); color: #b45309; padding: 0.75rem 1rem; border-radius: 0.75rem; text-align: center; font-weight: 600; font-size: 0.9rem; }
+        .disclaimer { font-size: 0.8rem; text-align: center; color: var(--text-secondary); padding: 0.5rem 1rem; background-color: #f1f5f9; border-radius: 0.5rem; }
+        .link { color: var(--primary-blue); text-decoration: none; font-weight: 600; font-size: 0.9rem; text-align: center; }
+        .tooltip { font-size: 0.8rem; color: var(--text-secondary); text-align: center; margin-top: -1rem; }
+        .invoice-display { display: flex; align-items: center; gap: 1rem; background-color: #f1f5f9; padding: 1rem; border-radius: 0.75rem; border: 1px dashed var(--border-color); }
+        .invoice-display span { font-size: 1.25rem; font-weight: 700; letter-spacing: 2px; flex-grow: 1; text-align: center; }
+        .invoice-display button { padding: 0.5rem 0.75rem; font-size: 0.8rem; border-radius: 0.5rem; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--text-primary); color: white; padding: 0.75rem 1.5rem; border-radius: 2rem; font-size: 0.9rem; z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
+        .preference-item { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 1px solid var(--border-color); border-radius: 0.75rem; }
+        .preference-item .num { font-weight: 700; color: var(--primary-blue); }
+        .preference-item .text { flex-grow: 1; font-size: 0.9rem; }
+        .preference-item .delete-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.2rem; }
+        .review-summary dt { font-weight: 600; color: var(--text-secondary); font-size: 0.9rem; }
+        .review-summary dd { font-weight: 400; margin-bottom: 1rem; font-size: 1rem; }
+        .review-summary dd ol { padding-right: 1.5rem; }
+        .checkbox-group { display: flex; align-items: center; gap: 0.75rem; background-color: #f1f5f9; padding: 1rem; border-radius: 0.75rem; }
+        .checkbox-group input { width: 1.25rem; height: 1.25rem; accent-color: var(--primary-blue); }
+        .checkbox-group label { font-size: 0.85rem; line-height: 1.5; }
+        .status-card { text-align: center; padding: 2rem 1.5rem; border-radius: 1rem; border: 1px solid; }
+        .status-card .icon { font-size: 3rem; line-height: 1; margin-bottom: 1rem; }
+        .status-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .status-card p { font-size: 1rem; margin-bottom: 1.5rem; }
+        .status-card-accepted { background-color: var(--success-bg); color: #14532d; border-color: var(--success-border); }
+        .status-card-processing { background-color: var(--warning-bg); color: #78350f; border-color: var(--warning-border); }
+        .status-card-rejected { background-color: var(--danger-bg); color: #991b1b; border-color: var(--danger-border); }
+        .acceptance-details { text-align: right; font-size: 1rem; }
+        .acceptance-details strong { color: var(--text-primary); }
+        @media print {
+            body { padding: 0; background-color: white; }
+            .mobile-container { max-width: 100%; box-shadow: none; border-radius: 0; }
+            .screen { display: none !important; }
+            #success-screen { display: flex !important; }
+            .header, .footer, .btn, .disclaimer, .countdown-banner { display: none; }
+            #success-screen .btn-secondary { display: none; }
+            #success-screen .btn-success { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <header class="header">
+          
+            <h1>نموذج بوابة القبول الموحد</h1>
+            <p>جمهورية السودان - 2025</p>
+        </header>
+
+        <div id="progress-container" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-line" id="progress-line"></div>
+                <div class="step active" data-step="1">1</div><div class="step" data-step="2">2</div><div class="step" data-step="3">3</div><div class="step" data-step="4">4</div><div class="step" data-step="5">5</div>
+            </div>
+        </div>
+
+        <main id="home-screen" class="screen active">
+            <h2>مرحباً بك في بوابة التقديم الإلكتروني</h2>
+            <p class="disclaimer">⚠️ <strong>إخلاء مسؤولية:</strong> هذا الموقع هو نموذج لأغراض تعليمية وتوضيحية فقط، ولا يمثل البوابة الرسمية للقبول. جميع البيانات وهمية وغير حقيقية.</p>
+            <div class="countdown-banner">ينتهي التقديم يوم 14 نوفمبر 2025 (باقي 6 أيام)</div>
+            <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
+                <button class="btn btn-primary" data-target="invoice-screen" data-flow="new">🚀 ابدأ تقديم جديد</button>
+                <a href="https://daleel.admission.gov.sd/" target="_blank" class="btn btn-secondary">📖 دليل القبول الرسمي</a>
+                <button class="btn btn-secondary" data-target="login-screen" data-flow="resume">🔄 متابعة حالة الطلب</button>
+            </div>
+        </main>
+
+        <main id="invoice-screen" class="screen">
+            <h3>الخطوة 1: استخراج رقم الفاتورة</h3>
+            <form id="invoice-form" onsubmit="return false;"><div class="form-group"><label for="seat-number">رقم الجلوس (7 أرقام)</label><input type="number" id="seat-number" placeholder="مثال: 1234567"></div><div class="form-group"><label for="course-type">نوع المساق</label><select id="course-type"><option value="science">علمي</option><option value="arts">أدبي</option></select></div><div class="form-group"><label for="exam-year">سنة الامتحان</label><select id="exam-year"><option value="2025">2025</option><option value="2024">2024</option></select></div><div class="form-group"><label for="admission-type">نوع القبول</label><select id="admission-type"><option value="general">عام</option><option value="private">خاص</option><option value="workers">أبناء العاملين</option><option value="foreign">شهادات عربية/أجنبية</option></select></div></form>
+            <div class="info-box">سيتم استخدام هذا الرقم في تطبيق <strong>بنكك</strong> أو <strong>فوري</strong> لدفع رسوم التقديم.</div>
+            <button id="generate-invoice-btn" class="btn btn-primary">استخراج رقم الفاتورة</button>
+            <div id="invoice-result" style="display: none; width: 100%; gap: 1rem; flex-direction: column;"><p style="text-align: center; font-weight: 600;">تم إنشاء رقم الدفع بنجاح. استخدمه لإكمال عملية الدفع.</p><div class="invoice-display"><span id="invoice-number-text"></span><button id="copy-invoice-btn" class="btn btn-secondary">نسخ</button></div><button class="btn btn-primary" data-target="login-screen">تم الدفع، الانتقال للخطوة التالية</button></div>
+        </main>
+
+        <main id="login-screen" class="screen">
+            <h3>تسجيل الدخول</h3>
+            <form id="login-form" onsubmit="return false;"><div class="form-group"><label for="login-seat-number">رقم الجلوس</label><input type="number" id="login-seat-number" placeholder="أدخل رقم جلوسك"></div><div class="form-group"><label for="form-number">رقم الاستمارة</label><input type="number" id="form-number" placeholder="أدخل رقم الاستمارة"></div></form>
+            <div class="tooltip">ℹ️ رقم الاستمارة يُمنح بعد دفع الفاتورة بنجاح.</div>
+            <button id="login-btn" class="btn btn-primary">تسجيل الدخول</button>
+            <a href="#" class="link">نسيت رقم الاستمارة؟</a>
+        </main>
+
+        <main id="preferences-screen" class="screen">
+            <h3>الخطوة 3: اختيار الرغبات (0/45)</h3>
+            <div class="info-box">راجع <strong>دليل القبول</strong> قبل اختيار الرغبات لتعرف النسبة المطلوبة لكل كلية.</div>
+            <div id="preferences-list" style="display: flex; flex-direction: column; gap: 1rem; width: 100%;"></div>
+            <div class="card" id="add-preference-card"><div class="form-group"><label for="university">الجامعة</label><select id="university"><option>اختر الجامعة...</option><option>جامعة الخرطوم</option><option>جامعة السودان للعلوم والتكنولوجيا</option><option>جامعة النيلين</option></select></div><div class="form-group"><label for="faculty">الكلية</label><select id="faculty"><option>اختر الكلية...</option><option>كلية الهندسة</option><option>كلية الطب</option><option>كلية علوم الحاسوب</option><option>كلية الاقتصاد</option></select></div></div>
+            <button id="add-preference-btn" class="btn btn-secondary">+ إضافة رغبة جديدة</button>
+            <button class="btn btn-primary" data-target="review-screen">مراجعة الرغبات</button>
+        </main>
+
+        <main id="review-screen" class="screen">
+            <h3>الخطوة 4: مراجعة وتأكيد التقديم</h3>
+            <div class="card"><dl class="review-summary"><dt>رقم الجلوس</dt><dd id="review-seat-number"></dd><dt>نوع القبول</dt><dd id="review-admission-type"></dd><dt>قائمة الرغبات</dt><dd><ol id="review-preferences-list"></ol></dd></dl></div>
+            <div class="checkbox-group"><input type="checkbox" id="confirmation-check"><label for="confirmation-check">أقر بأن جميع البيانات صحيحة ومطابقة للشهادة الثانوية.</label></div>
+            <div style="display: flex; gap: 1rem; width: 100%;"><button class="btn btn-secondary" data-target="preferences-screen" style="flex: 1;">تعديل الرغبات</button><button id="confirm-submission-btn" class="btn btn-primary" data-target="success-screen" style="flex: 2;" disabled>تأكيد التقديم</button></div>
+        </main>
+
+        <main id="success-screen" class="screen">
+            <div class="success-banner"><div class="icon">🎉</div><h2>تم تقديمك بنجاح!</h2></div>
+            <div class="card" style="text-align: center;">
+                <p><strong>⚠️ تنبيه هام:</strong> احتفظ برقم استمارتك في مكان آمن، ستحتاجه لمتابعة حالة طلبك لاحقاً.</p>
+                <div class="invoice-display" style="margin-top: 1rem;"><span id="final-form-number"></span></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
+                <button id="print-form-btn" class="btn btn-success">📄 طباعة/حفظ الاستمارة</button>
+                <button class="btn btn-secondary" data-target="home-screen">العودة للرئيسية</button>
+            </div>
+        </main>
+        
+        <main id="status-screen" class="screen">
+            <h3>حالة الطلب</h3>
+            <div id="status-card-container"></div>
+            <button class="btn btn-secondary" data-target="home-screen">العودة للرئيسية</button>
+        </main>
+
+        <footer class="footer">© 2025 وزارة التعليم العالي والبحث العلمي – جمهورية السودان</footer>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const allScreens = document.querySelectorAll('.screen');
+        const navButtons = document.querySelectorAll('button[data-target], a[data-target]');
+        const toast = document.getElementById('toast');
+        const state = { currentFlow: 'new', preferences: [], maxPreferences: 45 };
+
+        function navigateTo(screenId) {
+            allScreens.forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId)?.classList.add('active');
+            updateProgress(screenId);
+        }
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                if (button.getAttribute('target') === '_blank') return;
+                e.preventDefault();
+                const targetId = button.dataset.target;
+                if (button.dataset.flow) state.currentFlow = button.dataset.flow;
+                if (targetId === 'review-screen') populateReviewScreen();
+                navigateTo(targetId);
+            });
+        });
+
+        document.getElementById('login-btn').addEventListener('click', () => {
+            const seatNum = document.getElementById('login-seat-number').value;
+            const formNum = document.getElementById('form-number').value;
+            if (!seatNum || !formNum) { return showToast('الرجاء إدخال رقم الجلوس ورقم الاستمارة.'); }
+            
+            if (state.currentFlow === 'resume') {
+                renderApplicationStatus(seatNum);
+                navigateTo('status-screen');
+            } else {
+                navigateTo('preferences-screen');
+            }
+        });
+
+        function renderApplicationStatus(seatNum) {
+            const container = document.getElementById('status-card-container');
+            const lastDigit = parseInt(seatNum.slice(-1));
+            let statusCardHTML = '';
+
+            if (lastDigit <= 3) { // Accepted
+                statusCardHTML = `<div class="status-card status-card-accepted"><div class="icon">🎉</div><h2>تهانينا، تم قبولك!</h2><p>تم ترشيحك للقبول حسب التفاصيل التالية:</p><div class="acceptance-details"><p><strong>الجامعة:</strong> جامعة الخرطوم</p><p><strong>الكلية:</strong> كلية الهندسة - قسم الكهرباء</p></div><br><button class="btn btn-success" onclick="window.print()">طباعة إشعار القبول</button></div>`;
+            } else if (lastDigit <= 6) { // Processing
+                statusCardHTML = `<div class="status-card status-card-processing"><div class="icon">⏳</div><h2>طلبك قيد المعالجة</h2><p>لا يزال طلبك قيد المراجعة. يرجى التحقق مرة أخرى في وقت لاحق.</p></div>`;
+            } else { // Rejected
+                statusCardHTML = `<div class="status-card status-card-rejected"><div class="icon">😔</div><h2>لم يتم قبولك</h2><p>نأسف لإعلامك بأنه لم يتم ترشيحك للقبول في هذه المرحلة. حظاً أوفر في المرات القادمة.</p><button class="btn btn-secondary">الاطلاع على فرص التقديم الأخرى</button></div>`;
+            }
+            container.innerHTML = statusCardHTML;
+        }
+
+        function updateProgress(screenId) {
+            const screenStepMap = { 'home-screen': 0, 'invoice-screen': 1, 'login-screen': 2, 'preferences-screen': 3, 'review-screen': 4, 'success-screen': 5 };
+            const currentStep = screenStepMap[screenId] || 0;
+            const progressContainer = document.getElementById('progress-container');
+            progressContainer.style.display = (currentStep > 0 && state.currentFlow === 'new') ? 'block' : 'none';
+            if (state.currentFlow !== 'new') return;
+            
+            document.querySelectorAll('.step').forEach(step => step.classList.toggle('active', parseInt(step.dataset.step) <= currentStep));
+            document.getElementById('progress-line').style.width = `${Math.max(0, (currentStep - 1) / 4 * 100)}%`;
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        document.getElementById('generate-invoice-btn').addEventListener('click', () => {
+            if (document.getElementById('seat-number').value.length < 7) { return showToast('الرجاء إدخال رقم جلوس صحيح (7 أرقام).'); }
+            const invoiceNum = Math.floor(10000000 + Math.random() * 90000000);
+            document.getElementById('invoice-number-text').textContent = invoiceNum;
+            document.getElementById('final-form-number').textContent = `ADM-2025-${invoiceNum.toString().slice(0, 6)}`;
+            document.getElementById('invoice-result').style.display = 'flex';
+            document.getElementById('generate-invoice-btn').style.display = 'none';
+        });
+
+        document.getElementById('copy-invoice-btn').addEventListener('click', () => {
+            navigator.clipboard.writeText(document.getElementById('invoice-number-text').textContent)
+                .then(() => showToast('تم نسخ رقم الفاتورة بنجاح!'))
+                .catch(() => showToast('فشل النسخ.'));
+        });
+
+        const preferencesList = document.getElementById('preferences-list');
+        function renderPreferences() {
+            const header = document.querySelector('#preferences-screen h3');
+            header.textContent = `الخطوة 3: اختيار الرغبات (${state.preferences.length}/${state.maxPreferences})`;
+            const isMax = state.preferences.length >= state.maxPreferences;
+            document.getElementById('add-preference-btn').disabled = isMax;
+            document.getElementById('add-preference-card').style.display = isMax ? 'none' : 'block';
+            preferencesList.innerHTML = state.preferences.map((pref, index) => `<div class="preference-item"><span class="num">${index + 1}</span><div class="text"><strong>${pref.university}</strong><br><small>${pref.faculty}</small></div><button class="delete-btn" data-index="${index}">✕</button></div>`).join('');
+        }
+
+        document.getElementById('add-preference-btn').addEventListener('click', () => {
+            const uni = document.getElementById('university'), fac = document.getElementById('faculty');
+            if (uni.selectedIndex === 0 || fac.selectedIndex === 0) { return showToast('الرجاء اختيار الجامعة والكلية.'); }
+            state.preferences.push({ university: uni.options[uni.selectedIndex].text, faculty: fac.options[fac.selectedIndex].text });
+            renderPreferences();
+            uni.selectedIndex = 0; fac.selectedIndex = 0;
+        });
+
+        preferencesList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                state.preferences.splice(parseInt(e.target.dataset.index), 1);
+                renderPreferences();
+            }
+        });
+
+        function populateReviewScreen() {
+            document.getElementById('review-seat-number').textContent = document.getElementById('login-seat-number').value || 'غير مدخل';
+            const admissionTypeSelect = document.getElementById('admission-type');
+            document.getElementById('review-admission-type').textContent = admissionTypeSelect.options[admissionTypeSelect.selectedIndex].text;
+            const reviewList = document.getElementById('review-preferences-list');
+            reviewList.innerHTML = state.preferences.length === 0 ? '<li>لم يتم اختيار أي رغبات.</li>' : state.preferences.map(p => `<li>${p.university} - ${p.faculty}</li>`).join('');
+        }
+
+        document.getElementById('confirmation-check').addEventListener('change', (e) => {
+            document.getElementById('confirm-submission-btn').disabled = !e.target.checked;
+        });
+        
+        document.getElementById('print-form-btn').addEventListener('click', () => {
+            window.print();
+        });
+
+        document.querySelectorAll('button[data-target="home-screen"]').forEach(btn => btn.addEventListener('click', () => {
+            Object.assign(state, { currentFlow: 'new', preferences: [] });
+            renderPreferences();
+            ['invoice-form', 'login-form'].forEach(id => document.getElementById(id).reset());
+            document.getElementById('confirmation-check').checked = false;
+            document.getElementById('confirm-submission-btn').disabled = true;
+            document.getElementById('invoice-result').style.display = 'none';
+            document.getElementById('generate-invoice-btn').style.display = 'block';
+        }));
+
+        navigateTo('home-screen');
+    });
+    </script>
+</body>
+</html>
