@@ -271,7 +271,7 @@
             const lastDigit = parseInt(seatNum.slice(-1));
             let statusCardHTML = '';
             if (lastDigit <= 3) { statusCardHTML = `<div class="status-card status-card-accepted"><div class="icon">🎉</div><h2>تهانينا، تم قبولك!</h2><p>تم ترشيحك للقبول حسب التفاصيل التالية:</p><div class="acceptance-details"><p><strong>الجامعة:</strong> جامعة الخرطوم</p><p><strong>الكلية:</strong> كلية الهندسة - قسم الكهرباء</p></div><br><button class="btn btn-success" onclick="window.print()"><span class="btn-text">طباعة إشعار القبول</span></button></div>`; } 
-            else if (lastDigit <= 6) { statusCardHTML = `<div class="status-card status-card-processing"><div class="icon">⏳</div><h2>طلبك قيد المعالجة</h2><p>لا يزال طلبك قيد المراجعة. يرجى التحقق مرة أخرى في وقت لاحق.</p></div>`; } 
+            else if (lastDigit <= 6) { statusCardHTML = `<div class="status-card status-card-processing"><div class="icon">⏳</div><h2>طلبك قيد المعالجة</h2><p>لا يزال طلبك قيد المراجعة. يرجو التحقق مرة أخرى في وقت لاحق.</p></div>`; } 
             else { statusCardHTML = `<div class="status-card status-card-rejected"><div class="icon">😔</div><h2>لم يتم قبولك</h2><p>نأسف لإعلامك بأنه لم يتم ترشيحك للقبول في هذه المرحلة.</p><button class="btn btn-secondary"><span class="btn-text">الاطلاع على فرص التقديم الأخرى</span></button></div>`; }
             container.innerHTML = statusCardHTML;
         }
@@ -354,12 +354,13 @@
             }
         });
 
-        // Drag and Drop Logic
+        // Drag and Drop Logic - FIX APPLIED HERE
         let draggedItem = null;
         preferencesList.addEventListener('dragstart', e => {
             draggedItem = e.target.closest('.preference-item');
             if (draggedItem) {
-                draggedItem.dataset.originalIndex = draggedItem.dataset.index; // Store current index
+                // Store the index of the item being dragged in the dataTransfer object
+                e.dataTransfer.setData('text/plain', draggedItem.dataset.index);
                 setTimeout(() => draggedItem.classList.add('dragging'), 0);
             }
         });
@@ -384,13 +385,21 @@
             }
         });
 
-        preferencesList.addEventListener('drop', () => {
-            const newOrder = Array.from(preferencesList.querySelectorAll('.preference-item')).map(item => {
-                // Find the preference object using the original index stored in the dataset
-                return state.preferences[parseInt(item.dataset.originalIndex)];
+        preferencesList.addEventListener('drop', (e) => {
+            e.preventDefault();
+            
+            // 1. Get the new visual order of the DOM elements.
+            const finalState = Array.from(preferencesList.children).map(item => {
+                const university = item.querySelector('strong').textContent;
+                const faculty = item.querySelector('small').textContent;
+                return { university, faculty };
             });
-            state.preferences = newOrder;
-            renderPreferences(); // Re-render to fix indices and numbers
+
+            // 2. Update the state with the new order.
+            state.preferences = finalState;
+            
+            // 3. Re-render to fix indices and synchronize the DOM with the state.
+            renderPreferences(); 
         });
 
         function getDragAfterElement(container, y) {
